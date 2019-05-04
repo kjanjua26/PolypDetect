@@ -20,16 +20,3 @@ with tf.Session() as sess:
     mask_pred = mask_pred > 0.9999
     plt.imshow(mask_pred, cmap='gray')
     plt.show()
-    labeled_heatmap, n_labels = label(mask_pred)
-    bbox = []
-    for i in range(n_labels):
-        mask_i = labeled_heatmap == (i + 1)
-        nonzero = np.nonzero(mask_i)
-        nonzero_row = nonzero[0]
-        nonzero_col = nonzero[1]
-        left_top = min(nonzero_col), min(nonzero_row)
-        right_bot = max(nonzero_col), max(nonzero_row)
-        image = cv2.rectangle(img, left_top, right_bot, color=(0, 255, 0), thickness=2)      
-        bbox.append((left_top, right_bot))
-    plt.imshow(img, cmap='gray')
-    plt.show()
