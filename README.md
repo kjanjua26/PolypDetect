@@ -4,4 +4,4 @@ This is a repository for the project Detection of Polyps in Colonoscopy. We impl
 <img src="images/logo.png"/>
 
 ## UNET Results
-<img src="results/result.png"/>
+<img src="UNet_Segmentation/results/result.png"/>
