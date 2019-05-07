@@ -19,7 +19,7 @@ def next_batch(num, data, labels):
 
 def get_data(directory):
     for img_file in glob(directory+"/Original/*.tif"):
-        img = cv2.imread(img_file)
+        img = cv2.imread(img_file, 0)
         img = cv2.resize(img, (256, 256))
         image_list.append(img)
     for mask_file in glob(directory+"/Ground Truth/*.tif"):
@@ -27,19 +27,21 @@ def get_data(directory):
         mask = cv2.resize(mask, (256, 256))
         mask_list.append(mask)
     assert len(mask_list) == len(image_list)
-    np.save('images.npy', image_list)
-    np.save('masks.npy', mask_list)
+    np.save('images_gray.npy', image_list)
+    np.save('masks_gray.npy', mask_list)
 
 def train_test_split_data(directory):
-    if os.path.isfile('images.npy') and os.path.isfile('masks.npy'):
+    if os.path.isfile('images_gray.npy') and os.path.isfile('masks_gray.npy'):
         print('DATA EXISTS!')
-        images = np.load('images.npy')
-        masks = np.load('masks.npy')
+        images = np.load('images_gray.npy')
+        masks = np.load('masks_gray.npy')
         x_train, x_val, y_train, y_val = train_test_split(images, masks, test_size=0.15, random_state=42)
         x_train = np.asarray(x_train)
         x_val = np.asarray(x_val)
         y_val = np.asarray(y_val)
         y_train = np.asarray(y_train)
+        x_train = np.reshape(x_train, (-1, 256, 256, 1))
+        y_train = np.reshape(y_train, (-1, 256, 256, 1))
         y_train = np.reshape(y_train, (-1, 256, 256, 1))
         y_val = np.reshape(y_val, (-1, 256, 256, 1))
         print("Done Data Formation.")
